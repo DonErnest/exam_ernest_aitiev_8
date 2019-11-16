@@ -6,9 +6,12 @@
 {% endblock %}
 {% block menu %}
     {% if user == user_obj %}
-     <li class="nav-item">
-        <a class="nav-link" href="{% url 'accounts:update user' user.pk %}">Редактировать данные профиля</a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:update user' user.pk %}">Редактировать данные профиля</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:change password' user.pk %}">Сменить пароль</a>
+        </li>
     {% endif %}
 {% endblock %}
 {% block content %}

@@ -73,6 +73,41 @@ class UserChangeForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'avatar']
         profile_fields = ['avatar']
 
+class UserPasswordChangeForm(forms.ModelForm):
+    old_password = forms.CharField(max_length=100, required=True, label='Старый пароль',
+                                       widget=forms.PasswordInput, strip=False)
+    password = forms.CharField(max_length=100, required=True, label='Новый пароль', widget=forms.PasswordInput, strip=False)
+    password_confirm = forms.CharField(max_length=100, required=True, label='Подтвердите новый пароль',
+                                       widget=forms.PasswordInput, strip=False)
+
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        user = self.instance
+        if not user.check_password(old_password):
+            raise ValidationError('Это не старый пароль!')
+        return old_password
+
+    def clean(self):
+        super().clean()
+        password_1 = self.cleaned_data.get('password')
+        password_2 = self.cleaned_data.get('password_confirm')
+        if password_1 != password_2:
+            raise ValidationError('Пароли не совпадают!', code='passwords_do_not_match')
+        return self.cleaned_data
+
+    def save(self, **kwargs):
+        kwargs['commit'] = False
+        self.instance = super().save(**kwargs)
+        self.instance.set_password(self.cleaned_data['password'])
+        self.instance.save()
+        return self.instance
+
+    class Meta:
+        model = User
+        fields = ['password', 'password_confirm', 'old_password']
+
+
 class ReviewForm(forms.ModelForm):
 
     class Meta:
