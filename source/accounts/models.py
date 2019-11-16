@@ -7,7 +7,7 @@ class Review(models.Model):
     product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE, null=False, blank=False, verbose_name='Продукт')
     review = models.TextField(max_length=1500, null=False, blank=False, verbose_name='Отзыв')
     rating = models.PositiveIntegerField(null=False, blank=False,
-                                         validators=[MinValueValidator(0), MaxValueValidator(5)], verbose_name='Оценка')
+                                         validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name='Оценка')
 
     def __str__(self):
         return "Отзыв пользователя {} о {}".format(self.author, self.product)

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+    Добавить товар
+{% endblock %}
+{% block content %}
+    <section class="d-flex flex-column">
+        <h1 class="text-center">Добавить товар</h1>
+        <div class="align-self-center">
+            <form action="{% url 'webapp:add product'%}" method="POST">
+                {% include 'partial/form.html' with button_text='Добавить'%}
+            </form>
+        </div>
+    </section>
+{% endblock %}

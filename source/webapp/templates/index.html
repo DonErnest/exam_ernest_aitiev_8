@@ -1,13 +1,39 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
 
 {% block title %}
     Главная
 {% endblock %}
 {% block menu %}
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{% url 'webapp:add product' %}">Добавить товар</a>
     </li>
 {% endblock %}
 {% block content %}
-    <h1>Здесь будет контрольная</h1>
+    <h1 class="text-center">Отзывы</h1>
+    <div class="d-flex flex-column ">
+        {% for product in products %}
+            <div class="card mb-3 align-self-center w-75">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/product_default.jpeg' %}" class="card-img" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="card-header">{{ product.get_category_display }}</h5>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|truncatechars:'50' }}</p>
+                            <a href="{% url 'webapp:product detailed' product.pk%}" class="btn btn-primary">Обзор товара</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}

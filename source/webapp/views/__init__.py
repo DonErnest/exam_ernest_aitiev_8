@@ -1,1 +1,1 @@
-from .index import IndexView
+from .product import IndexView
