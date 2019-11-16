@@ -22,7 +22,8 @@
     {% endif %}
     <h1>Личная страница</h1>
     <h2><strong>Пользователь </strong>{{ user_obj.username }}</h2>
-    <h3><strong>Электронный адрес: </strong>{{ user_obj.email }}</h3>
+    <h6><strong>Электронный адрес: </strong>{{ user_obj.email }}</h6>
+    <h6><strong>Имя: </strong>{{ user_obj.first_name }} {{ user_obj.last_name }}</h6>
     <div>
         <ul class="mt-5 list-group">
             <li class="list-group-item">Оценки пользователей</li>

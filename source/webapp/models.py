@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, Avg
+from math import modf
 
 from accounts.models import Review
 
@@ -16,9 +17,15 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads', null=True, blank=True, verbose_name='Изображение')
 
     def average(self):
-        rating_number = self.reviews.count()
-        average = self.reviews.aggregate(average=Sum('rating') / rating_number)
-        return average['average']
+        average = self.reviews.aggregate(average=Avg('rating'))
+        average_parts = modf(average['average'])
+        print(average_parts)
+        average['wholes'] = int(average_parts[1])
+        print(average['wholes'])
+        average['decimal'] = 100 - average_parts[0]*100
+        average['rest'] = average_parts[0]*100
+        average['shift'] = 18*average['decimal']//100
+        return average
 
     def __str__(self):
         return self.name

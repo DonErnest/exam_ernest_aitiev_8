@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load filters %}
 
 {% block title %}
     Главная
@@ -29,7 +29,26 @@
                         <h5 class="card-header">{{ product.get_category_display }}</h5>
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
-                            <h4>Средний рейтинг: {{ product.average }}</h4>
+                            <h4>Средний рейтинг: </h4>
+                            {% if product.average %}
+                                <div class="position-relative">
+                                    {% for i in product.average.wholes|times %}
+                                        <div class="d-inline-block" style="overflow: hidden; position: relative; display: inline-block;">
+                                            <i class="fas fa-star" style="position: relative"></i>
+                                        </div>
+
+                                    {% endfor %}
+                                    {% if product.average.decimal %}
+                                        <div class = "d-inline-block" style="overflow: hidden; position: relative; display: inline-block; right: {{ product.average.shift }}px">
+                                            <i class="fas fa-star" style="position: relative; left: {{ product.average.decimal }}%;"></i>
+                                        </div>
+                                    {% endif %}
+                                    ({{ product.average.average }})
+                                </div>
+
+                            {% else %}
+                    Пока нет оценок
+                {% endif %}
                             <p class="card-text">{{ product.description|truncatechars:'50' }}</p>
                             <a href="{% url 'webapp:product detailed' product.pk%}" class="btn btn-primary">Обзор товара</a>
                         </div>

@@ -28,14 +28,28 @@
                 <img src="{% static 'images/product_default.jpeg' %}"  class="w-25 h-25" alt="{{ product.name }}">
             {% endif %}
             <h3>{{ product.get_category_display }}</h3>
-            <h4>Средняя оценка:
+            <h4>Средняя оценка:</h4>
                 {% if product.average %}
-                    {{ product.average }}
+                    <div class="position-relative">
+                        {% for i in product.average.wholes|times %}
+                            <div class="d-inline-block" style="overflow: hidden; position: relative; display: inline-block;">
+                                <i class="fas fa-star" style="position: relative"></i>
+                            </div>
+
+                        {% endfor %}
+                        {% if product.average.decimal %}
+                            <div class = "d-inline-block" style="overflow: hidden; position: relative; display: inline-block; right: {{ product.average.shift }}px">
+                                <i class="fas fa-star" style="position: relative; left: {{ product.average.decimal }}%;"></i>
+                            </div>
+                        {% endif %}
+                        ({{ product.average.average }})
+                    </div>
+
                 {% else %}
                     Пока нет оценок
                 {% endif %}
-            </h4>
-            <p>{{ product.description }}</p>
+
+            <p>{{ product.description|linebreaks|escape}}</p>
 
             <ul class="list-group">
                 <li class="list-group-item">Оценки пользователей</li>
