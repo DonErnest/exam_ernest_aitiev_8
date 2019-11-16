@@ -1,0 +1,1 @@
+from .user import UserLoginView, UserLogoutView, register_view
