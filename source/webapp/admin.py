@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from webapp.models import Product
+
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'description','image']
+    exclude = []
+    list_display_links = ['name']
+    list_filter = ['category']
+
+admin.site.register(Product, ProductAdmin)

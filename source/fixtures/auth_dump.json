@@ -1,0 +1,56 @@
+[
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$WmzOSBCmFgqm$kgDlXDg16jCBUja/qZj32wVgqtl70AgeDMFeAf4CHfg=",
+    "last_login": "2019-11-16T05:40:19.130Z",
+    "is_superuser": true,
+    "username": "ernest_aitiev",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2019-11-15T18:53:18.419Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$TFmtmWkUR92K$6N6VdAGgMGqH8HDOzqullD+o4omnPQqrayWt5IqretI=",
+    "last_login": "2019-11-15T19:10:52.967Z",
+    "is_superuser": false,
+    "username": "Borya",
+    "first_name": "\u0411\u043e\u0440\u0438\u0441",
+    "last_name": "\u041d\u0438\u043a\u043e\u043b\u0430\u0435\u0432\u0438\u0447",
+    "email": "boris@mail.ru",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2019-11-15T19:10:27.252Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$meA5nQOtZogv$pIa7Yj9jYsK+Oof0gV51/1dq/6FCaBMtg6fNo6tq4XQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "John",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2019-11-16T05:52:34.175Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
