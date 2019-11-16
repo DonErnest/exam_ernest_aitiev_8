@@ -48,7 +48,6 @@
                 {% else %}
                     Пока нет оценок
                 {% endif %}
-
             <p>{{ product.description|linebreaks|escape}}</p>
 
             <ul class="list-group">
@@ -71,8 +70,6 @@
                                     <a class="btn btn-danger" href="{% url 'accounts:delete review' review.pk %}">Удалить</a>
                                 </div>
                             {% endif %}
-
-
                         </li>
                     {% endfor %}
                 {% else %}

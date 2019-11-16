@@ -17,15 +17,18 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads', null=True, blank=True, verbose_name='Изображение')
 
     def average(self):
+
         average = self.reviews.aggregate(average=Avg('rating'))
-        average_parts = modf(average['average'])
-        print(average_parts)
-        average['wholes'] = int(average_parts[1])
-        print(average['wholes'])
-        average['decimal'] = 100 - average_parts[0]*100
-        average['rest'] = average_parts[0]*100
-        average['shift'] = 18*average['decimal']//100
-        return average
+        if average['average']:
+            average_parts = modf(average['average'])
+            average['wholes'] = int(average_parts[1])
+            average['decimal'] = 100 - average_parts[0]*100
+            average['rest'] = average_parts[0]*100
+            average['shift'] = 18*average['decimal']//100
+            return average
+        else:
+            return None
+
 
     def __str__(self):
         return self.name

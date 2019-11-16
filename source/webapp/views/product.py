@@ -1,11 +1,8 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.db.models import Avg, Sum
-from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from accounts.forms import ReviewForm
-from accounts.models import Review
 from webapp.models import Product
 
 

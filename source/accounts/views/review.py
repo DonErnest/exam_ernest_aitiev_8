@@ -36,8 +36,6 @@ class EditReviewView(UserPassesTestMixin, UpdateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review/edit.html'
-    # permission_required = 'accounts.change_review'
-    # permission_denied_message = 'Только модераторы или пользователи могут редактировать свои отзывы!'
 
     def test_func(self):
         self.object = self.get_review()
@@ -56,8 +54,6 @@ class DeleteReviewView(UserPassesTestMixin, DeleteView):
     model = Review
     context_object_name = 'review'
     template_name = 'review/delete_confirm.html'
-    # permission_required = 'accounts.delete_review'
-    # permission_denied_message = 'Только модераторы или пользователи могут удалять отзывы!'
 
     def get_review(self):
         review_pk = self.kwargs.get('pk')

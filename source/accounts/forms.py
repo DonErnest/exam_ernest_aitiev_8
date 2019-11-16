@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from accounts.models import Review
+from accounts.models import Review, Profile
 
 
 class UserSignUpForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class UserSignUpForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
-
+            Profile.objects.create(user=user)
         return user
 
     class Meta:
