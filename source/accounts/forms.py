@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from accounts.models import Review
+
 
 class UserSignUpForm(forms.ModelForm):
     email = forms.EmailField(label='Электронный адрес', required=True, widget=forms.EmailInput)
@@ -38,3 +40,10 @@ class UserSignUpForm(forms.ModelForm):
     class Meta:
         model = User
         fields=['username','password','password_confirm','first_name','last_name','email']
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model=Review
+        fields = ['rating', 'review']

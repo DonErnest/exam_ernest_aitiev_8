@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+    Редактировать отзыв
+{% endblock %}
+{% block content %}
+    <section class="d-flex flex-column">
+        <h1 class="text-center">Редактировать отзыв</h1>
+        <div class="align-self-center">
+            <form action="{% url 'accounts:edit review' review.pk%}" method="POST">
+                {% include 'partial/form.html' with button_text='Редактировать'%}
+            </form>
+        </div>
+    </section>
+{% endblock %}

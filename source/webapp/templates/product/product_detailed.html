@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load filters %}
 {% load staticfiles %}
 {% block title %}
     Обзор
@@ -24,6 +25,40 @@
             {% endif %}
             <h3>{{ product.get_category_display }}</h3>
             <p>{{ product.description }}</p>
+            <ul class="list-group">
+                <li class="list-group-item">Оценки пользователей</li>
+                {% if product.reviews %}
+                    {% for review in product.reviews.all %}
+                        <li class="list-group-item d-flex flex-column">
+                            <h6><strong>{{ review.author.username }} / {{ review.author.email }}</strong></h6>
+                            <div class="row pl-3">
+                                <p class="mb-0">{{ review.review }}</p>
+                                <p class="mr-5 ml-auto mb-0">
+                                    {% for i in review.rating|times %}
+                                        <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                </p>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-primary" href="{% url 'accounts:edit review' review.pk %}">Редактировать</a>
+                                    <a class="btn btn-danger" href="{% url 'accounts:delete review' review.pk %}">Удалить</a>
+                                </div>
+                            </div>
+
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">Отзывов пока нет</li>
+                {% endif %}
+                <li class="list-group-item">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reviewAddModal">
+                        Добавить отзыв
+                    </button>
+                </li>
+            </ul>
         </div>
     </section>
+    {% include 'partial/modal_review_add.html' %}
 {% endblock %}
+
+
+

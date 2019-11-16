@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView, CreateView
 
+from accounts.forms import ReviewForm
 from webapp.models import Product
 
 
@@ -14,6 +15,11 @@ class ProductDetailedView(DetailView):
     model = Product
     template_name = 'product/product_detailed.html'
     context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context=super(ProductDetailedView, self).get_context_data()
+        context['form'] = ReviewForm()
+        return context
 
 class ProductAddView(CreateView):
     model = Product
