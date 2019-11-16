@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}
-    Редактировать товар
+    Личные данные
 {% endblock %}
 {% block content %}
     <section class="d-flex flex-column">
-        <h1 class="text-center">Редактировать товар</h1>
+        <h1 class="text-center">Редактировать</h1>
         <div class="align-self-center">
-            <form action="{% url 'webapp:edit product' product.pk%}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'accounts:update user' user.pk %}" method="POST" enctype="multipart/form-data">
                 {% include 'partial/form.html' with button_text='Редактировать'%}
             </form>
-
         </div>
     </section>
 {% endblock %}

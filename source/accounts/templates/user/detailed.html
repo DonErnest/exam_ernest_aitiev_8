@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load filters %}
+{% load staticfiles %}
+{% block title %}
+    Личная страница
+{% endblock %}
+{% block menu %}
+    {% if user == user_obj %}
+     <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:update user' user.pk %}">Редактировать данные профиля</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if user_obj.profile.avatar %}
+        <img class='avatar' src="{{ user_obj.profile.avatar.url }}" width='250' height='250' alt="user picture">
+    {% else %}
+        <img class='avatar' src="{% static '/images/l-3058.jpg' %}" width='250' height='250' alt="user picture">
+    {% endif %}
+    <h1>Личная страница</h1>
+    <h2><strong>Пользователь </strong>{{ user_obj.username }}</h2>
+    <h3><strong>Электронный адрес: </strong>{{ user_obj.email }}</h3>
+
+    <ul class="mt-5 list-group">
+        <li class="list-group-item">Оценки пользователей</li>
+        {% if user.reviews %}
+            {% for review in user_obj.reviews.all %}
+                <li class="list-group-item d-flex flex-column">
+                    <h6><strong>{{ review }}</strong></h6>
+                    <div class="row pl-3">
+                        <p class="mb-0">{{ review.review }}</p>
+                        <p class="mr-5 ml-auto mb-0">
+                            {% for i in review.rating|times %}
+                                <i class="fas fa-star"></i>
+                            {% endfor %}
+                        </p>
+                    </div>
+
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">Пользователь пока не оставлял отзывов</li>
+        {% endif %}
+    </ul>
+{% endblock %}

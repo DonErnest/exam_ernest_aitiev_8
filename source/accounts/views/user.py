@@ -1,13 +1,18 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView, LoginView
 from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.generic import DetailView, UpdateView
 
-from accounts.forms import UserSignUpForm
+from accounts.forms import UserSignUpForm, UserChangeForm
+
 
 class UserLoginView(LoginView):
     template_name = 'registration/login.html'
     success_url = 'main_page'
     redirect_authenticated_user = True
+
 
 # def login_view(request, *args, **kwargs):
 #     context={}
@@ -40,8 +45,22 @@ def register_view(request, *args, **kwargs):
         form = UserSignUpForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            login(request,user)
+            login(request, user)
             return redirect('webapp:main page')
     else:
-        form=UserSignUpForm()
+        form = UserSignUpForm()
     return render(request, 'register.html', context={'form': form})
+
+
+class UserDetailedView(DetailView):
+    model = User
+    template_name = 'user/detailed.html'
+    context_object_name = 'user_obj'
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = UserChangeForm
+    template_name = 'user/update.html'
+
+    def get_success_url(self):
+        return reverse('accounts:user detailed', kwargs={'pk':  self.object.pk})

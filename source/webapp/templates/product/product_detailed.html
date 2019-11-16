@@ -24,13 +24,21 @@
                 <img src="{% static 'images/product_default.jpeg' %}"  class="w-25 h-25" alt="{{ product.name }}">
             {% endif %}
             <h3>{{ product.get_category_display }}</h3>
+            <h4>Средняя оценка:
+                {% if product.average %}
+                    {{ product.average }}
+                {% else %}
+                    Пока нет оценок
+                {% endif %}
+            </h4>
             <p>{{ product.description }}</p>
+
             <ul class="list-group">
                 <li class="list-group-item">Оценки пользователей</li>
                 {% if product.reviews %}
                     {% for review in product.reviews.all %}
                         <li class="list-group-item d-flex flex-column">
-                            <h6><strong>{{ review.author.username }} / {{ review.author.email }}</strong></h6>
+                            <h6><strong><a href="{% url 'accounts:user detailed' review.author.pk %}">{{ review.author.username }} / {{ review.author.email }}</a></strong></h6>
                             <div class="row pl-3">
                                 <p class="mb-0">{{ review.review }}</p>
                                 <p class="mr-5 ml-auto mb-0">

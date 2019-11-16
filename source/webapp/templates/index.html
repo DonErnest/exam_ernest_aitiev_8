@@ -27,6 +27,7 @@
                         <h5 class="card-header">{{ product.get_category_display }}</h5>
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
+                            <h4>Средний рейтинг: {{ product.average }}</h4>
                             <p class="card-text">{{ product.description|truncatechars:'50' }}</p>
                             <a href="{% url 'webapp:product detailed' product.pk%}" class="btn btn-primary">Обзор товара</a>
                         </div>

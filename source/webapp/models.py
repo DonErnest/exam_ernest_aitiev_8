@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import Sum
+
+from accounts.models import Review
 
 CATEGORY_DEFAULT = 'other'
 
@@ -12,6 +15,10 @@ class Product(models.Model):
     description = models.TextField(max_length=1500, null=True, blank=True, verbose_name='Описание')
     image = models.ImageField(upload_to='uploads', null=True, blank=True, verbose_name='Изображение')
 
+    def average(self):
+        rating_number = self.reviews.count()
+        average = self.reviews.aggregate(average=Sum('rating') / rating_number)
+        return average['average']
 
     def __str__(self):
         return self.name

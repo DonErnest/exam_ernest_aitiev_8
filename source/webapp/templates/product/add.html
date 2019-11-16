@@ -6,7 +6,7 @@
     <section class="d-flex flex-column">
         <h1 class="text-center">Добавить товар</h1>
         <div class="align-self-center">
-            <form action="{% url 'webapp:add product'%}" method="POST">
+            <form action="{% url 'webapp:add product'%}" method="POST" enctype="multipart/form-data">
                 {% include 'partial/form.html' with button_text='Добавить'%}
             </form>
         </div>
