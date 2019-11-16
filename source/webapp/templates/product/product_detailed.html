@@ -6,12 +6,16 @@
     Обзор
 {% endblock %}
 {% block menu %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'webapp:edit product' product.pk %}">Редактировать товар</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'webapp:delete product' product.pk %}">Удалить товар</a>
-    </li>
+    {% if perms.webapp.change_product %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'webapp:edit product' product.pk %}">Редактировать товар</a>
+        </li>
+    {% endif %}
+    {% if perms.webapp.delete_product %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'webapp:delete product' product.pk %}">Удалить товар</a>
+        </li>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <section class="d-flex flex-column">
@@ -38,30 +42,35 @@
                 {% if product.reviews %}
                     {% for review in product.reviews.all %}
                         <li class="list-group-item d-flex flex-column">
-                            <h6><strong><a href="{% url 'accounts:user detailed' review.author.pk %}">{{ review.author.username }} / {{ review.author.email }}</a></strong></h6>
                             <div class="row pl-3">
-                                <p class="mb-0">{{ review.review }}</p>
+                                <h6><strong><a href="{% url 'accounts:user detailed' review.author.pk %}">{{ review.author.username }} / {{ review.author.email }}</a></strong></h6>
                                 <p class="mr-5 ml-auto mb-0">
                                     {% for i in review.rating|times %}
                                         <i class="fas fa-star"></i>
                                     {% endfor %}
                                 </p>
-                                <div class="btn-group btn-group-sm" role="group">
+                            </div>
+                            <p class="mb-0">{{ review.review }}</p>
+                            {% if user == review.author or perms.accounts.change_review%}
+                                <div class="btn-group btn-group-sm w-25 ml-auto" role="group">
                                     <a class="btn btn-primary" href="{% url 'accounts:edit review' review.pk %}">Редактировать</a>
                                     <a class="btn btn-danger" href="{% url 'accounts:delete review' review.pk %}">Удалить</a>
                                 </div>
-                            </div>
+                            {% endif %}
+
 
                         </li>
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item">Отзывов пока нет</li>
                 {% endif %}
-                <li class="list-group-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reviewAddModal">
-                        Добавить отзыв
-                    </button>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reviewAddModal">
+                            Добавить отзыв
+                        </button>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </section>

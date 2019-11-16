@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView, LoginView
 from django.shortcuts import redirect, render
@@ -12,28 +13,6 @@ class UserLoginView(LoginView):
     template_name = 'registration/login.html'
     success_url = 'main_page'
     redirect_authenticated_user = True
-
-
-# def login_view(request, *args, **kwargs):
-#     context={}
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         redirect_path = request.GET.get('next')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             if redirect_path:
-#                 return redirect(redirect_path)
-#             return redirect('webapp:main_page')
-#         else:
-#             context['has_error']=True
-#             context['next']=redirect_path
-#             context['username']=username
-#
-#     else:
-#         context={'next': request.GET.get('next')}
-#     return render(request, 'login.html', context=context)
 
 
 class UserLogoutView(LogoutView):
@@ -57,7 +36,8 @@ class UserDetailedView(DetailView):
     template_name = 'user/detailed.html'
     context_object_name = 'user_obj'
 
-class UserUpdateView(UpdateView):
+
+class UserUpdateView(UserPassesTestMixin, UpdateView):
     model = User
     form_class = UserChangeForm
     template_name = 'user/update.html'
@@ -65,8 +45,11 @@ class UserUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('accounts:user detailed', kwargs={'pk':  self.object.pk})
 
+    def test_func(self):
+        return self.request.user.pk == self.kwargs['pk']
 
-class UserPasswordChangeView(UpdateView):
+
+class UserPasswordChangeView(UserPassesTestMixin, UpdateView):
     model = User
     template_name = 'user/password_change.html'
     form_class = UserPasswordChangeForm
@@ -75,3 +58,6 @@ class UserPasswordChangeView(UpdateView):
 
     def get_success_url(self):
         return reverse('accounts:login')
+
+    def test_func(self):
+        return self.request.user.pk == self.kwargs['pk']

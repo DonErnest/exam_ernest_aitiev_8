@@ -1,0 +1,6 @@
+superuser: ernest_aitiev
+pass: 2091
+
+moderator: Moderator
+pass: moderator
+

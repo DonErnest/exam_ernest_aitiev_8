@@ -6,9 +6,11 @@
     Главная
 {% endblock %}
 {% block menu %}
+    {% if perms.webapp.add_product %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'webapp:add product' %}">Добавить товар</a>
     </li>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <h1 class="text-center">Отзывы</h1>

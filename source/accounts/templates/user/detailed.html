@@ -23,26 +23,35 @@
     <h1>Личная страница</h1>
     <h2><strong>Пользователь </strong>{{ user_obj.username }}</h2>
     <h3><strong>Электронный адрес: </strong>{{ user_obj.email }}</h3>
+    <div>
+        <ul class="mt-5 list-group">
+            <li class="list-group-item">Оценки пользователей</li>
+            {% if user.reviews %}
+                {% for review in user_obj.reviews.all %}
+                    <li class="list-group-item d-flex flex-column">
 
-    <ul class="mt-5 list-group">
-        <li class="list-group-item">Оценки пользователей</li>
-        {% if user.reviews %}
-            {% for review in user_obj.reviews.all %}
-                <li class="list-group-item d-flex flex-column">
-                    <h6><strong>{{ review }}</strong></h6>
-                    <div class="row pl-3">
-                        <p class="mb-0">{{ review.review }}</p>
-                        <p class="mr-5 ml-auto mb-0">
-                            {% for i in review.rating|times %}
-                                <i class="fas fa-star"></i>
-                            {% endfor %}
-                        </p>
-                    </div>
+                        <div class="row pl-3">
+                            <h6><strong>{{ review }}</strong></h6>
+                            <p class="mr-5 ml-auto mb-0">
+                                {% for i in review.rating|times %}
+                                    <i class="fas fa-star"></i>
+                                {% endfor %}
+                            </p>
 
-                </li>
-            {% endfor %}
-        {% else %}
-            <li class="list-group-item">Пользователь пока не оставлял отзывов</li>
-        {% endif %}
-    </ul>
+                        </div>
+                        <p class="mb-0">{{ review.review|escape|linebreaks }}</p>
+                        {% if user == user_obj or perms.accounts.change_review%}
+                            <div class="btn-group btn-group-sm mw-25 ml-auto" role="group">
+                            <a class="btn btn-primary" href="{% url 'accounts:edit review' review.pk %}">Редактировать</a>
+                            <a class="btn btn-danger" href="{% url 'accounts:delete review' review.pk %}">Удалить</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">Пользователь пока не оставлял отзывов</li>
+            {% endif %}
+        </ul>
+    </div>
+
 {% endblock %}

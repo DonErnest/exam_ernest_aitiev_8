@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Avg, Sum
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -23,28 +24,34 @@ class ProductDetailedView(DetailView):
         context['form'] = ReviewForm()
         return context
 
-class ProductAddView(CreateView):
+class ProductAddView(PermissionRequiredMixin, CreateView):
     model = Product
     fields=['name', 'category','description','image']
     template_name = 'product/add.html'
+    permission_required = 'webapp.add_product'
+    permission_denied_message = 'Только модераторы могут добавлять товары и услуги!'
 
     def get_success_url(self):
         return reverse('webapp:product detailed', kwargs={'pk': self.object.pk})
 
 
-class ProductEditView(UpdateView):
+class ProductEditView(PermissionRequiredMixin, UpdateView):
     model = Product
     fields = ['name', 'category','description','image']
     template_name = 'product/edit.html'
+    permission_required = 'webapp.change_product'
+    permission_denied_message = 'Только модераторы могут добавлять товары и услуги!'
 
     def get_success_url(self):
         return reverse('webapp:product detailed', kwargs={'pk': self.object.pk})
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'product/delete.html'
     context_object_name = 'product'
     success_url = 'webapp: main page'
+    permission_required = 'webapp.delete_product'
+    permission_denied_message = 'Только модераторы могут добавлять товары и услуги!'
 
     def get_success_url(self):
         return reverse('webapp:main page')

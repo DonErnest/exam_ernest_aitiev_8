@@ -1,5 +1,6 @@
 from _ast import Delete
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -10,7 +11,7 @@ from accounts.models import Review
 from webapp.models import Product
 
 
-class AddReviewView(CreateView):
+class AddReviewView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review/add.html'
@@ -31,17 +32,41 @@ class AddReviewView(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class EditReviewView(UpdateView):
+class EditReviewView(UserPassesTestMixin, UpdateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review/edit.html'
+    # permission_required = 'accounts.change_review'
+    # permission_denied_message = 'Только модераторы или пользователи могут редактировать свои отзывы!'
+
+    def test_func(self):
+        self.object = self.get_review()
+        return self.request.user.has_perm('accounts.change_review') or self.request.user.pk == self.object.author.pk
 
     def get_success_url(self):
         return reverse('webapp:product detailed', kwargs={'pk': self.object.product.pk})
 
-class DeleteReviewView(DeleteView):
+    def get_review(self):
+        review_pk = self.kwargs.get('pk')
+        review = get_object_or_404(Review,pk=review_pk)
+        return review
+
+
+class DeleteReviewView(UserPassesTestMixin, DeleteView):
     model = Review
     context_object_name = 'review'
+    template_name = 'review/delete_confirm.html'
+    # permission_required = 'accounts.delete_review'
+    # permission_denied_message = 'Только модераторы или пользователи могут удалять отзывы!'
+
+    def get_review(self):
+        review_pk = self.kwargs.get('pk')
+        review = get_object_or_404(Review,pk=review_pk)
+        return review
+
+    def test_func(self):
+        self.object = self.get_review()
+        return self.request.user.has_perm('accounts.change_review') or self.request.user.pk == self.object.author.pk
 
     def get_success_url(self):
         return reverse('webapp:product detailed', kwargs={'pk': self.object.product.pk})
